@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="searchWrapper">
+        {{!-- <input type="text" name="searchBar" id="searchBar" placeholder="search for a group" /> --}}
+    </div>
+    <div class="box">
+            <h2>List of your groups</h2>
+            <ul class="userList" id="user-list">
+                {{#each groups}}
+                    <li>{{this.name}}</li>
+                {{/each}}
+            </ul>
+    </div>
+</div>
