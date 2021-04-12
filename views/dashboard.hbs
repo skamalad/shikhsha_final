@@ -6,7 +6,9 @@
             <h2>List of your groups</h2>
             <ul class="userList" id="user-list">
                 {{#each groups}}
+                <a href="/group/{{this.id}}">
                     <li>{{this.name}}</li>
+                </a>
                 {{/each}}
             </ul>
     </div>

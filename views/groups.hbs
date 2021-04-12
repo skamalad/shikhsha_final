@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="searchWrapper">
+        {{!-- <input type="text" name="searchBar" id="searchBar" placeholder="search for a user" /> --}}
+    </div>
+    <div class="member-container">
+        <h2>List of Users</h2>
+        <ul class="member-list">
+            {{#each members}}
+            <a href="/reset/{{this.id}}">
+                <div class="member-item">
+                    <li class="member-email">
+                        {{this.email}}</li>
+                    <button class="reset-password-btn">
+                        <i class="fas fa-unlock"></i>
+                    </button>
+                </div>
+                </a>
+            {{/each}}
+        </ul>
+    </div>
+</div>

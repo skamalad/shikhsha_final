@@ -42,6 +42,7 @@ const authorizeDirectory = async function() {
 
     // Extract the payload as a string.
     const payload = version.payload.data.toString();
+    console.log(payload);
 
     return payload;
   }
