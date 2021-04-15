@@ -6,15 +6,16 @@
         <h2>List of Users</h2>
         <ul class="member-list">
             {{#each members}}
-            <a href="/reset/{{this.id}}">
-                <div class="member-item">
-                    <li class="member-email">
-                        {{this.email}}</li>
-                    <button class="reset-password-btn">
-                        <i class="fas fa-unlock"></i>
-                    </button>
-                </div>
+            <li class="member-email">
+                <a href="/reset/{{this.id}}">
+                    <div class="member-item">
+                        {{this.email}}
+                        <button class="reset-password-btn">
+                            <i class="fas fa-unlock"></i>
+                        </button>
+                    </div>
                 </a>
+            </li>
             {{/each}}
         </ul>
     </div>

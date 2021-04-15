@@ -19,6 +19,7 @@ const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
 const { auth } = require('google-auth-library');
+var cache = require('../util/memoryCache');
 
 const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
 
@@ -30,63 +31,54 @@ const scopes = [
   'https://www.googleapis.com/auth/admin.directory.group.member',
 ];
 
+const authorizeDirectory = async function () {
+  var admin = cache.get('admin');
 
-const authorizeDirectory = async function() {
+  if (!admin) {
     const client = new SecretManagerServiceClient();
 
-  async function accessSecretVersion() {
-    const [version] = await client.accessSecretVersion({
-      name:
-        'projects/codename-shikhsha/secrets/app-engine-shikhsha/versions/latest',
+    async function accessSecretVersion() {
+      const [version] = await client.accessSecretVersion({
+        name:
+          'projects/codename-shikhsha/secrets/app-engine-shikhsha/versions/latest',
+      });
+
+      // Extract the payload as a string.
+      const payload = version.payload.data.toString();
+      return payload;
+    }
+
+    const key = await accessSecretVersion();
+    const jsonKey = JSON.parse(key);
+
+    var jwt = new google.auth.JWT({
+      email: jsonKey.client_email,
+      key: jsonKey.private_key,
+      subject: 'admin@cloudworker.solutions',
+      scopes: scopes,
     });
 
-    // Extract the payload as a string.
-    const payload = version.payload.data.toString();
-    console.log(payload);
+    admin = await google.admin({
+      version: 'directory_v1',
+      auth: jwt,
+    });
 
-    return payload;
+    cache.set('admin', admin);
+  } else {
+    console.log('admin found in cache');
   }
 
-
-
-  const key = await accessSecretVersion();
-  
-  const jsonKey = JSON.parse(key);
-
-  var jwt = new google.auth.JWT({
-    email: jsonKey.client_email,
-    key: jsonKey.private_key,
-    subject: 'admin@cloudworker.solutions',
-    scopes: scopes,
-  });
-
-  jwt.authorize(function (err, tokens) {
-    if (err) {
-      console.log(err);
-      return;
-    } else {
-      console.log('Successfully connected!');
-    }
-  });
-
-  // obtain the admin client
-  const admin = await google.admin({
-    version: 'directory_v1',
-    auth: jwt,
-  });
   return admin;
-}
-
+};
 
 /**
  * Lists the first 10 users in the domain.
  *
  */
-const listUsers = async function(res) {
-    
-const admin = await authorizeDirectory();
+const listUsers = async function (res) {
+  const admin = await authorizeDirectory();
   // list the first 10 users
-admin.users.list(
+  admin.users.list(
     {
       domain: 'cloudworker.solutions',
       maxResults: 10,
@@ -96,7 +88,7 @@ admin.users.list(
       if (err) return console.error('The API returned an error:', err);
 
       const users = resp.data.users;
-    //   res.status(200);
+      //   res.status(200);
       var usersStr = '';
       if (users.length) {
         console.log('Users:');
@@ -109,37 +101,36 @@ admin.users.list(
         usersStr = 'No users found.';
         console.log('No users found.');
       }
-    //   res.send(usersStr);
+      //   res.send(usersStr);
       res.end();
     }
   );
 };
 
-
 // **** Lists the groups ****
 
-const listGroups = async function(email) {
+const listGroups = async function (email) {
+  var groups = [];
+  const admin = await authorizeDirectory();
 
-    var groups = [];
-    const admin = await authorizeDirectory();
-
-    // list the first 10 users
-    const resp = await admin.groups.list({
-        maxResults: 200,
-        userKey: email,
-    });
-    console.log('***** LINE SEPARATOR ***********');
-    groups = resp.data.groups;
-    // console.log(groups)
-    // var resultGroups = groups.map(a => a.name)
-    var resultGroups = groups.filter( a => a.name.includes(process.env.GROUP_PREFIX));
-    console.log(resultGroups)
-    return resultGroups;
+  // list the first 10 users
+  const resp = await admin.groups.list({
+    maxResults: 200,
+    userKey: email,
+  });
+  console.log('***** LINE SEPARATOR ***********');
+  groups = resp.data.groups;
+  // console.log(groups)
+  // var resultGroups = groups.map(a => a.name)
+  var resultGroups = groups.filter((a) =>
+    a.name.includes(process.env.GROUP_PREFIX)
+  );
+  console.log(resultGroups);
+  return resultGroups;
 };
 
-
 module.exports = {
-    authorizeDirectory,
-    listUsers,
-    listGroups
-}
+  authorizeDirectory,
+  listUsers,
+  listGroups,
+};

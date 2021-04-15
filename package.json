@@ -12,11 +12,13 @@
   "dependencies": {
     "@google-cloud/secret-manager": "^3.5.0",
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
     "connect-mongo": "^4.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.1",
     "express-session": "^1.17.1",
+    "express-validator": "^6.10.0",
     "gcp-metadata": "^4.2.1",
     "google-auth-library": "^7.0.3",
     "googleapi": "^1.0.2",
