@@ -1,27 +1,17 @@
-const { response } = require('express');
 const { authorizeDirectory } = require('../routes/auth');
 
 const updatePassword = async function (userKey, password) {
+  console.log('Updating user info');
   const admin = await authorizeDirectory();
-
-  const resp = await admin.users.update(
-    {
-      userKey: userKey,
-      requestBody: {
-        password: password,
-      },
+  const response = await admin.users.update({
+    userKey: userKey,
+    requestBody: {
+      password: password,
     },
-    (err) => {
-      console.log('from the update password js file');
-      if (response.status === 400) {
-        // console.log(err);
-        console.log('Error in password');
-      }
-      //   console.log(err);
-    }
-  );
+  });
+  console.log(`${response} from update password page`);
 
-  return resp;
+  return response;
 };
 
 module.exports = updatePassword;

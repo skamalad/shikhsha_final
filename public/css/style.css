@@ -318,7 +318,7 @@ form input:not([type='submit']):valid {
 }
 
 .confirmpwdbtn input:disabled {
-  background-color: grey;
+  background-color: rgb(190, 190, 190);
   cursor: default;
 }
 

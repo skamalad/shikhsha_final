@@ -70,20 +70,23 @@ router.get('/reset/:memberid', isUserAuthenticated, async (req, res) => {
   });
 });
 
-router.post('/reset', validateConfirmPassword, async (req, res) => {
+router.post('/reset', async (req, res) => {
   const memberEmail = req.body.username;
   const password = req.body.password;
   const confPassword = req.body.confPassword;
-  const errors = await validationResult(req);
+  // const errors = await validationResult(req);
   const memberInfo = await userInfo(memberEmail);
 
-  if (!errors.isEmpty()) {
-    return res.send('Errors');
+  var response = await updatePassword(memberEmail, password);
+  if (response.status === 200) {
+    res.render('success', {
+      layout: false,
+      email: response.data.primaryEmail,
+    });
   } else {
-    const resp = await updatePassword(memberEmail, password);
-    // console.log(resp.json);
-    console.log('***** LINE Separator');
-    // console.log(res.status);
+    console.log('Error');
+    // var myJson = JSON.stringify(response);
+    // console.log(`${myJson} from index page`);
   }
 });
 
