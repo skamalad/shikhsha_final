@@ -33,14 +33,6 @@ body {
   min-height: 100vh;
 }
 
-.searchWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 25px;
-  width: 100%;
-}
-
 .box {
   border-bottom: 20px solid rgba(51, 103, 214, 1);
   border-bottom-left-radius: 10px;
@@ -109,6 +101,72 @@ body {
   cursor: pointer;
 }
 
+.searchWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 25px;
+  /* width: 100%; */
+}
+
+.searchWrapper ::placeholder {
+  color: grey;
+}
+
+.searchWrapper input {
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+}
+
+form.searchBar {
+  display: flex;
+  /* width: 100%; */
+}
+form.searchBar #submit {
+  margin-left: 1em;
+}
+
+button.btn-search {
+  border: none;
+  background: none;
+  outline: none;
+}
+form.searchBar #submit .icon::before {
+  display: inline;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.search::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 2em;
+  content: '\f002';
+  margin-left: 1em;
+  cursor: pointer;
+  color: rgb(51, 103, 214);
+  border: none;
+}
+
+.search-button {
+  padding: 10px;
+}
+
+#user-search-btn:disabled .search::before {
+  color: grey;
+}
+
+#searchButton {
+  background-color: rgba(51, 103, 214, 1);
+  border-radius: 4px;
+}
+
+#searchButton:disabled .search::before {
+  color: grey;
+}
+
 .member-container {
   /* display: flex;
     justify-content: center;
@@ -133,6 +191,21 @@ body {
 .member-container ul {
   position: relative;
   background: #fff;
+}
+
+.member-container ul:hover li {
+  opacity: 0.2;
+}
+
+.member-container ul li:hover {
+  /* transform: scale(1.1); */
+  z-index: 100;
+  background-color: rgba(51, 103, 214, 1);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  opacity: 1;
+  cursor: pointer;
+  transition: 0.2s ease-in;
 }
 
 .member-container ul li:nth-child(even) {
@@ -238,7 +311,7 @@ body {
 form {
   display: block;
   width: 100%;
-  max-width: 400px;
+  /* max-width: 400px; */
   padding: 20px;
 }
 
@@ -247,7 +320,9 @@ form {
   background-color: #fff;
   border-radius: 8px;
   margin-bottom: 15px;
+  margin-top: 15px;
   color: red;
+  text-align: center;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 

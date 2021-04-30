@@ -10,33 +10,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" />
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/resetpages.css">
     <title>Shikhsha Admin Login</title>
 </head>
 
 <body>
     {{> _header}}
-    <div class="resetpwd-container">
-        <div class="resetbox">
-            <h2>Reset Password</h2>
-            <form action="/reset" method="POST" class="browser-default">
-                <div class="form-group">
-                    <label>Username: </label>
-                    <input type="text" name="username" id="username" value={{this.memberEmail}} readonly />
-                </div>
-                <div class="form-group">
-                    <label>Password: </label>
-                    <input type="password" name="password" id="password" placeholder="Enter password" required />
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password: </label>
-                    <input type="password" name="confPassword" id="confPassword" placeholder="Confirm password"
-                        required />
-                </div>
-                <div class="confirmpwdbtn">
-                    <input type="submit" value="Update Password" id="submit" disabled>
-                </div>
-            </form>
+    <div class="container">
+        <div class="success-container">
+            <div class="successicon"></div>
+            <p>Successfully Updated Password for</p>
+            <p class="email">{{this.email}}</p>
+            {{!-- <p>
+                <a href="/logout">Logout</a>
+            </p> --}}
         </div>
     </div>
 </body>

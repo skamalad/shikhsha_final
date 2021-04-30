@@ -1,7 +1,20 @@
 <div class="container">
     <div class="searchWrapper">
-        {{!-- <input type="text" name="searchBar" id="searchBar" placeholder="search for a user" /> --}}
+        <form action="/group/{{this.groupid}}" method="POST" class="searchBar">
+            <input type="hidden" id="groupid" name="groupid" value={{this.groupid}}>
+            <input type="text" name="searchBar" id="searchBar" placeholder="Enter the user's email ID"
+                value="{{this.term}}" />
+            {{!-- <i class="fas fa-search"></i>
+            <input type="submit" value="" id="submit"> --}}
+            <button type="submit" class="btn-search" id="user-search-btn" disabled>
+                <span class="icon search" id="search-icon" />
+            </button>
+        </form>
     </div>
+    {{#if error}}
+    <p class="err-msg">{{this.error}}</p>
+    {{/if}}
+
     <div class="member-container">
         <h2>List of Users</h2>
         <ul class="member-list">
@@ -19,4 +32,45 @@
             {{/each}}
         </ul>
     </div>
+
+    <div class="matchList" id="match-list"></div>
+
+    <div class="pagination">
+        <ul class="pagination-list">
+            {{#each pages}}
+            <li class="page">
+                <a href="?from={{this.page}}">{{this.label}}</a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
 </div>
+
+<script>
+    const searchButton = document.getElementById('user-search-btn');
+    const searchBar = document.getElementById('searchBar');
+    const check = () => {
+        if (searchBar.value === "") {
+            searchButton.disabled = true
+        } else {
+            searchButton.disabled = false
+        }
+    }
+    searchBar.onkeyup = check
+//    const search = document.getElementById('searchButton');
+//  const searchTerm = document.getElementById('searchBar');
+//    const matchList = document.getElementById('match-list');
+
+  //  const searchUser = async searchText => {
+
+    //}
+
+    //search.addEventListener('click', () => searchUser(searchTerm.value))
+
+    //let searchTimeout;
+    //const doSearch = (e) => {
+      //  document.location.href = document.location.href.replace(/\?term=.*/, '') + '?term=' + document.querySelector('#searchBar').value;
+    // }
+    // const search = document.getElementById('searchBar');
+    // search.addEventListener('input', () => searchUsers(search.value))
+</script>

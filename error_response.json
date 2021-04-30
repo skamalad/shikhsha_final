@@ -1,0 +1,72 @@
+{
+  config: {
+      url: 'https://admin.googleapis.com/admin/directory/v1/users/resettest%40cloudworker.solutions',
+      method: 'PUT',
+      userAgentDirectives: [Array],
+      paramsSerializer: [Function (anonymous)],
+      data: [Object],
+      headers: [Object],
+      params: {},
+      validateStatus: [Function (anonymous)],
+      retry: true,
+      body: '{"password":"W@lterWh!te"}',
+      responseType: 'json',
+      retryConfig: [Object]
+  },
+    data: { error: [Object] },
+    headers: {
+      'alt-svc': 'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      'cache-control': 'private',
+      connection: 'close',
+      'content-encoding': 'gzip',
+      'content-type': 'application/json; charset=UTF-8',
+      date: 'Sat, 24 Apr 2021 14:26:51 GMT',
+      server: 'ESF',
+      'transfer-encoding': 'chunked',
+      vary: 'Origin, X-Origin, Referer',
+      'x-content-type-options': 'nosniff',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-xss-protection': '0'
+    },
+    status: 400,
+    statusText: 'Bad Request',
+    request: {
+      responseURL: 'https://admin.googleapis.com/admin/directory/v1/users/resettest%40cloudworker.solutions'
+    }
+  },
+  config: {
+    url: 'https://admin.googleapis.com/admin/directory/v1/users/resettest%40cloudworker.solutions',
+    method: 'PUT',
+    userAgentDirectives: [ [Object] ],
+    paramsSerializer: [Function (anonymous)],
+    data: { password: 'W@lterWh!te' },
+    headers: {
+      'x-goog-api-client': 'gdcl/5.0.2 gl-node/14.15.1 auth/7.0.3',
+      'Accept-Encoding': 'gzip',
+      'User-Agent': 'google-api-nodejs-client/5.0.2 (gzip)',
+      Authorization: 'Bearer ya29.a0AfH6SMDXx4en4lEKGpWWmp7n5j2JN18nXfRX6z-hLxlEgTwB4VWgFdtia1SjRAdo6tlw20NGdtbDXZKtwXrkAbuLo5-Ls4lq1L8oh1PsPTd8rw08tqQEK_K4aaGXUQgsB8t92N9973TaNV8tvFr5nuAJu2_kFQQX9Gxnpb-Xwn0sziC8b62qG81JYae4pnOSVWZXiTonNqkj00QI-Q',
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    params: {},
+    validateStatus: [Function (anonymous)],
+    retry: true,
+    body: '{"password":"W@lterWh!te"}',
+    responseType: 'json',
+    retryConfig: {
+      currentRetryAttempt: 0,
+      retry: 3,
+      httpMethodsToRetry: [Array],
+      noResponseRetries: 2,
+      statusCodesToRetry: [Array]
+    }
+  },
+  code: 400,
+  errors: [
+    {
+      message: 'Reused Password Not Allowed',
+      domain: 'global',
+      reason: 'invalid'
+    }
+  ]
+}

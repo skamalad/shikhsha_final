@@ -4,10 +4,15 @@ const { isUserAuthenticated } = require('../middleware/authMiddleware');
 const { listUsers, listGroups } = require('./auth');
 const groupUsers = require('../util/userList');
 const userInfo = require('../util/userProfile');
+const getMember = require('../util/getMember');
 const updatePassword = require('../util/updatePassword');
+const md5 = require('md5');
+var sha1 = require('sha1');
 const { validationResult } = require('express-validator');
 const { validateConfirmPassword } = require('../middleware/validator');
 var cache = require('../util/memoryCache');
+const { response } = require('express');
+
 var user_email = '';
 
 // @desc Login/landing page
@@ -50,12 +55,44 @@ router.get('/dashboard', isUserAuthenticated, async (req, res) => {
 //@route GET /group/groupid
 router.get('/group/:groupid', isUserAuthenticated, async (req, res) => {
   const groupid = req.params.groupid;
-  const members = await groupUsers(groupid);
+  const from = parseInt(req.query.from || 0, 10) || 0;
+  const members = await groupUsers(groupid, from);
+
+  const pages = [];
+  for (var i = 0; i < Math.ceil(members.total / 10); i++)
+    pages.push({ page: i * 10, label: i + 1 });
+
   res.render('groups', {
-    members: members,
+    members: members.results,
+    total: members.total,
     groupid: groupid,
+    from: from,
+    pages: pages,
   });
   // res.send(`Group ID = ${req.params.groupid}`);
+});
+
+router.post('/group/:groupid', isUserAuthenticated, async (req, res) => {
+  const groupid = req.params.groupid;
+  const memberKey = req.body.searchBar;
+
+  await getMember(groupid, memberKey)
+    .then((response) => {
+      res.render('groups', {
+        members: [response.data], //Passing an array since the template expects an array
+        total: 1,
+        groupid: groupid,
+        from: null,
+        pages: null,
+      });
+    })
+    .catch((response) => {
+      console.log(response);
+      res.render('groups', {
+        groupid: groupid,
+        error: 'Email ID Not Found',
+      });
+    });
 });
 
 // @desc Form to reset password route
@@ -72,22 +109,35 @@ router.get('/reset/:memberid', isUserAuthenticated, async (req, res) => {
 
 router.post('/reset', async (req, res) => {
   const memberEmail = req.body.username;
-  const password = req.body.password;
-  const confPassword = req.body.confPassword;
+  const password = await md5(req.body.password);
+  // const password = req.body.password;
+  console.log(password);
+  // const confPassword = req.body.confPassword;
   // const errors = await validationResult(req);
-  const memberInfo = await userInfo(memberEmail);
+  // const memberInfo = await userInfo(memberEmail);
 
-  var response = await updatePassword(memberEmail, password);
-  if (response.status === 200) {
-    res.render('success', {
-      layout: false,
-      email: response.data.primaryEmail,
+  var response = await updatePassword(memberEmail, password)
+    .then((response) => {
+      console.log('All good');
+      console.log(response);
+      res.render('success', {
+        layout: false,
+        email: response.data.primaryEmail,
+      });
+    })
+    .catch((response) => {
+      console.log(response.errors);
+      res.render('reset-password', {
+        layout: false,
+        memberEmail: memberEmail,
+        error: response.errors[0].message,
+      });
     });
-  } else {
-    console.log('Error');
-    // var myJson = JSON.stringify(response);
-    // console.log(`${myJson} from index page`);
-  }
+});
+
+router.get('/logout', (req, res) => {
+  // req.logOut();
+  res.redirect('/_gcp_iap/clear_login_cookie');
 });
 
 module.exports = router;

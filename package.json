@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/secret-manager": "^3.5.0",
     "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-mongo": "^4.4.0",
     "dotenv": "^8.2.0",
@@ -23,12 +24,14 @@
     "google-auth-library": "^7.0.3",
     "googleapi": "^1.0.2",
     "googleapis": "^68.0.0",
+    "md5": "^2.3.0",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.1",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "sha1": "^1.1.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
