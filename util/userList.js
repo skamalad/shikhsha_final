@@ -10,7 +10,7 @@ const groupUsers = async function (groupid, from) {
     groupKey: groupid,
   });
   members = resp.data.members;
-  console.log(members);
+  // console.log(members);
   //   console.log(members);
   //   members = resp.data.members;
   const total = members.length;

@@ -167,6 +167,17 @@ form.searchBar #submit .icon::before {
   color: grey;
 }
 
+.cancel-search {
+  margin-left: -24px;
+  margin-top: 12px;
+  cursor: pointer;
+  color: #3b3b3b;
+}
+.cancel-search.disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .member-container {
   /* display: flex;
     justify-content: center;
@@ -247,6 +258,7 @@ form.searchBar #submit .icon::before {
   opacity: 0.2;
   cursor: pointer;
 }
+
 .member-container ul li:hover a {
   color: #fff;
 }
@@ -258,6 +270,12 @@ form.searchBar #submit .icon::before {
   color: #fff;
   opacity: 1;
   cursor: pointer;
+}
+
+.pagination li a {
+  padding-top: 1.5em;
+  font-size: 0.8em;
+  color: rgb(1, 1, 161);
 }
 
 .reset-password-btn {

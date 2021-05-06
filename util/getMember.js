@@ -9,6 +9,7 @@ const getMember = async function (groupid, useremail) {
   });
 
   console.log(user);
+  console.log(useremail);
   return user;
 };
 
