@@ -3,9 +3,10 @@
         <form action="/group/{{this.groupid}}" method="POST" class="searchBar">
             <input type="hidden" id="groupid" name="groupid" value={{this.groupid}}>
             <input type="text" name="searchBar" id="searchBar" placeholder="Enter the user's email ID"
-                value="{{this.term}}" />
-            {{!-- <i class="fas fa-search"></i>
-            <input type="submit" value="" id="submit"> --}}
+                value="{{this.searchTerm}}" defaultValue="{{this.searchTerm}}" />
+            <div class="cancel-search" onclick="clearSearch()">
+                <i class="fas fa-times"></i>
+            </div>
             <button type="submit" class="btn-search" id="user-search-btn" disabled>
                 <span class="icon search" id="search-icon" />
             </button>
@@ -13,7 +14,8 @@
     </div>
     {{#if error}}
     <p class="err-msg">{{this.error}}</p>
-    {{/if}}
+
+    {{else}}
 
     <div class="member-container">
         <h2>List of Users</h2>
@@ -32,7 +34,7 @@
             {{/each}}
         </ul>
     </div>
-
+    {{/if}}
     <div class="matchList" id="match-list"></div>
 
     <div class="pagination">
@@ -49,28 +51,32 @@
 <script>
     const searchButton = document.getElementById('user-search-btn');
     const searchBar = document.getElementById('searchBar');
-    const check = () => {
+    const cancelSearchIcon = document.querySelector('.cancel-search');
+    const check = (e) => {
         if (searchBar.value === "") {
             searchButton.disabled = true
+            cancelSearchIcon.classList.add('disabled')
         } else {
             searchButton.disabled = false
+            cancelSearchIcon.classList.remove('disabled')
+        }
+        if (e && e.keyCode === 13) {
+            document.querySelector('form').submit();
         }
     }
+
+
+    const clearSearch = () => {
+        //searchBar.value = ""
+        //document.querySelector("form").submit()
+        if (searchBar.defaultValue === "") {
+            searchBar.value = ""
+        } else {
+            document.location.href = document.location.href;
+        }
+
+    }
     searchBar.onkeyup = check
-//    const search = document.getElementById('searchButton');
-//  const searchTerm = document.getElementById('searchBar');
-//    const matchList = document.getElementById('match-list');
 
-  //  const searchUser = async searchText => {
-
-    //}
-
-    //search.addEventListener('click', () => searchUser(searchTerm.value))
-
-    //let searchTimeout;
-    //const doSearch = (e) => {
-      //  document.location.href = document.location.href.replace(/\?term=.*/, '') + '?term=' + document.querySelector('#searchBar').value;
-    // }
-    // const search = document.getElementById('searchBar');
-    // search.addEventListener('input', () => searchUsers(search.value))
+    check()
 </script>

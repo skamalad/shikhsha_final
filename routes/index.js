@@ -74,10 +74,14 @@ router.get('/group/:groupid', isUserAuthenticated, async (req, res) => {
 
 router.post('/group/:groupid', isUserAuthenticated, async (req, res) => {
   const groupid = req.params.groupid;
-  const memberKey = req.body.searchBar;
+  const memberKey = req.body.searchBar.toLowerCase();
 
   await getMember(groupid, memberKey)
     .then((response) => {
+      console.log(response.status);
+      if (response.status !== 200) {
+        console.log('Email not found');
+      }
       res.render('groups', {
         members: [response.data], //Passing an array since the template expects an array
         total: 1,
@@ -87,10 +91,13 @@ router.post('/group/:groupid', isUserAuthenticated, async (req, res) => {
       });
     })
     .catch((response) => {
-      console.log(response);
+      const status = response.status;
+      console.log(status);
       res.render('groups', {
         groupid: groupid,
+        members: [response.data],
         error: 'Email ID Not Found',
+        searchTerm: req.body.searchBar,
       });
     });
 });
