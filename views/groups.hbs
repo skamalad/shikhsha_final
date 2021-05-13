@@ -40,7 +40,7 @@
     <div class="pagination">
         <ul class="pagination-list">
             {{#each pages}}
-            <li class="page">
+            <li class="{{#if this.active}} active {{/if}} page">
                 <a href="?from={{this.page}}">{{this.label}}</a>
             </li>
             {{/each}}
