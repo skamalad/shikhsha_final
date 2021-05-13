@@ -22,7 +22,19 @@ if (process.env.NODE_ENV === 'developement') {
 }
 
 // Handlebars
-app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
+app.engine(
+  '.hbs',
+  exphbs({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    helpers: {
+      isEqual: function (a, b) {
+        console.log(a, b);
+        return a === b / 10;
+      },
+    },
+  })
+);
 app.set('view engine', '.hbs');
 
 // Session Middleware

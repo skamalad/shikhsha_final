@@ -60,7 +60,7 @@ router.get('/group/:groupid', isUserAuthenticated, async (req, res) => {
 
   const pages = [];
   for (var i = 0; i < Math.ceil(members.total / 10); i++)
-    pages.push({ page: i * 10, label: i + 1 });
+    pages.push({ page: i * 10, label: i + 1, active: i === from / 10 });
 
   res.render('groups', {
     members: members.results,
@@ -86,8 +86,9 @@ router.post('/group/:groupid', isUserAuthenticated, async (req, res) => {
         members: [response.data], //Passing an array since the template expects an array
         total: 1,
         groupid: groupid,
-        from: null,
+        from: 0,
         pages: null,
+        activePage: 0,
       });
     })
     .catch((response) => {
