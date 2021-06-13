@@ -18,6 +18,10 @@ p {
   align-items: center;
 }
 
+h4 {
+  font-size: 2.28rem;
+}
+
 .login-container {
   width: 50rem;
   margin-top: 50px;
@@ -37,9 +41,11 @@ body {
   border-bottom: 20px solid rgba(51, 103, 214, 1);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  padding-top: 40px;
 }
 
 .box h2 {
+  margin: 0;
   color: #fff;
   background: rgba(51, 103, 214, 1);
   padding: 10px 20px;
@@ -105,7 +111,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 25px;
+  padding: 5px;
   /* width: 100%; */
 }
 
@@ -179,9 +185,6 @@ form.searchBar #submit .icon::before {
 }
 
 .member-container {
-  /* display: flex;
-    justify-content: center;
-    align-items: center; */
   border-bottom: 20px solid rgba(51, 103, 214, 1);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -191,7 +194,7 @@ form.searchBar #submit .icon::before {
   margin-bottom: 0;
   color: #fff;
   background: rgba(51, 103, 214, 1);
-  padding: 10px 20px;
+  padding: 10px;
   text-align: center;
   font-size: 20px;
   font-weight: 700;
@@ -228,9 +231,7 @@ form.searchBar #submit .icon::before {
 }
 
 .member-item {
-  padding: 0.5rem;
-  /* background: white; */
-
+  padding: 0.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -272,11 +273,38 @@ form.searchBar #submit .icon::before {
   cursor: pointer;
 }
 
-.pagination li a {
-  padding-top: 1.5em;
-  font-size: 0.8em;
-  color: rgb(1, 1, 161);
+/* Pagination CSS */
+.pagination {
+  padding-top: 15px;
+  border-radius: 10px;
 }
+
+.pagination ul {
+  /* width: 50vh; */
+  display: flex;
+  background: rgba(51, 103, 214, 1);
+  width: 100%;
+  padding: 8px;
+  border-radius: 50px;
+  justify-content: space-evenly;
+}
+
+.pagination ul li {
+  list-style: none;
+}
+
+.pagination ul.pagination-list {
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.pagination ul li a {
+  width: 100%;
+  font-size: 18px;
+  color: #fff;
+}
+/* End of Pagination CSS */
 
 .reset-password-btn {
   background: rgb(171, 224, 171);
@@ -471,18 +499,16 @@ nav {
   align-items: center;
 }
 
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
   .nav-links {
     display: flex;
     /* background-color: red; */
-    justify-content: space-around;
+/* justify-content: space-around;
     width: 40%;
     list-style: none;
-    font-family: 'Montserrat', sans-serif;
-  }
-}
+    font-family: 'Montserrat', sans-serif; */
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
   body {
     overflow-x: hidden;
   }
@@ -514,3 +540,5 @@ nav {
 .nav-active {
   transform: translateX(0%);
 }
+  }
+} */
