@@ -27,6 +27,7 @@ router.get('/', isUserAuthenticated, async (req, res) => {
   }
   const memberInfo = await userInfo(user_email);
   const givenName = memberInfo.data.name.givenName;
+
   res.render('login', {
     layout: 'login',
     givenName: givenName,
@@ -43,7 +44,15 @@ router.get('/dashboard', isUserAuthenticated, async (req, res) => {
     var reqHeader = req.get('x-goog-authenticated-user-email');
     user_email = reqHeader.slice(20);
   }
-  console.log(user_email);
+
+  const entry = Object.assign({
+    severity: 'NOTICE',
+    message: `User ${user_email} logged in`,
+    component: 'node',
+  });
+
+  // Serialize to a JSON string and output.
+  console.log(JSON.stringify(entry));
   const groups = await listGroups(user_email);
   // console.log(groups)
   res.render('dashboard', {

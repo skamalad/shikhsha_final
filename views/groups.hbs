@@ -35,17 +35,20 @@
         </ul>
     </div>
     {{/if}}
-    <div class="matchList" id="match-list"></div>
 
+    {{!-- Pagination code --}}
     <div class="pagination">
         <ul class="pagination-list">
+            {{!-- <li><span><i class="fas fa-angle-left"></i> Prev</span></li> --}}
             {{#each pages}}
             <li class="{{#if this.active}} active {{/if}} page">
                 <a href="?from={{this.page}}">{{this.label}}</a>
             </li>
             {{/each}}
+            {{!-- <li><span>Next<i class="fas fa-angle-right"></i></span></li> --}}
         </ul>
     </div>
+
 </div>
 
 <script>
