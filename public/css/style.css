@@ -291,6 +291,11 @@ form.searchBar #submit .icon::before {
 
 .pagination ul li {
   list-style: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pagination ul.pagination-list {
@@ -303,6 +308,16 @@ form.searchBar #submit .icon::before {
   width: 100%;
   font-size: 18px;
   color: #fff;
+  padding: 0;
+}
+
+.pagination li.active {
+  background-color: white;
+  border-radius: 100%;
+}
+
+.pagination li.active a {
+  color: rgba(51, 103, 214, 1);
 }
 /* End of Pagination CSS */
 

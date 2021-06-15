@@ -38,6 +38,7 @@
 
     {{!-- Pagination code --}}
     <div class="pagination">
+        {{#if pages.length}}
         <ul class="pagination-list">
             {{!-- <li><span><i class="fas fa-angle-left"></i> Prev</span></li> --}}
             {{#each pages}}
@@ -47,6 +48,7 @@
             {{/each}}
             {{!-- <li><span>Next<i class="fas fa-angle-right"></i></span></li> --}}
         </ul>
+        {{/if}}
     </div>
 
 </div>
