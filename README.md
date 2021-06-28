@@ -76,8 +76,6 @@ G Suite domain: example.com
 
 1. On the Identity-Aware Proxy page, under HTTPS Resources, find the App Engine app you want to restrict access to. The Published column shows the URL of the app. To turn on IAP for the app, toggle the on/off switch in the IAP column.
 
-> To enable IAP, you need the ```appengine.applications.update,
-
-        clientauthconfig.clients.create, and clientauthconfig.clients.getWithSecret ``` permissions. These permissions are granted by roles, such as the Project Editor role. To learn more, see [Managing access to IAP-secured resources](https://cloud.google.com/iap/docs/managing-access#turning_on_and_off).
+> To enable IAP, you need the `appengine.applications.update, clientauthconfig.clients.create, and clientauthconfig.clients.getWithSecret ` permissions. These permissions are granted by roles, such as the Project Editor role. To learn more, see [Managing access to IAP-secured resources](https://cloud.google.com/iap/docs/managing-access#turning_on_and_off).
 
 2. To confirm that you want IAP to secure the application, click Turn On in the Turn on IAP window that appears. After you turn it on, IAP requires login credentials for all connections to your application.
