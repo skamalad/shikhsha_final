@@ -172,6 +172,7 @@ To delegate domain-wide authority to a service account:
 5. In the <b>OAuth Scopes</b> field, enter a comma-delimited list of the scopes required for your application
 
 The scopes we need are:
+
 `https://www.googleapis.com/auth/admin.directory.user`
 `https://www.googleapis.com/auth/admin.directory.group`
 `https://www.googleapis.com/auth/admin.directory.group.member`
