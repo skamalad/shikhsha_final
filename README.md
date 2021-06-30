@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 # Project Shiksha
 
 ## Please read first before proceeding
@@ -22,7 +24,28 @@ Please read below for more details on deployment
 
 ## Deploying Shikhsha - Deploying Shikhsha in your GCP environment
 
-Clone code from the [github repository](https://github.com/skamalad/shikhsha_final)
+1. Go to the [Google Cloud console](https://console.cloud.google.com/) and select your project. If you do not have a project or want to deploy this on a fresh project, select the dropdown under your project and click <b>New Project</b>
+
+2. Click ︁ and select App Engine. Once there click **Create Application**
+
+3. Select your desired region for deployment and click **Next**
+<p>
+    <span style="color:red">Please note: Region is permanent and cannot be changed later</span>.
+</p>
+
+4. This will take a few minutes. An App engine environment is being provisioned inside your project.
+
+5. All resources needed for the deployment of our project are in the github repository.
+
+6. You have 2 options to deploy the code in App Engine. This can be done directly from your IDE of choice and you will need the Cloud SDK. All instructions to do that can be found [here](https://cloud.google.com/sdk/docs/quickstart).
+
+### For the purpose of this deployment, we are going to use Google Cloud Shell
+
+[Cloud Shell](https://ide.cloud.google.com/) is online development and operations environment accessible anywhere with your browser.
+
+1. Use `gcloud config set project [PROJECT_ID]` to set your Cloud Platform project. If you are not sure of your Project ID, type `gcloud project list`
+
+2. Clone code from the [github repository](https://github.com/skamalad/shikhsha_final)
 
 -       git clone https://github.com/skamalad/shikhsha_final.git
 
@@ -124,7 +147,7 @@ In enterprise applications you may want to programmatically access a user's data
 
 ### Enable Google Workspace domain-wide delegation
 
-1. Locate the newly-created service account in the table. Under <b>Actions</b>, click the ellipsis and then Edit.
+1. Locate the newly-created service account in the table. Under <b>Actions</b>, click the <icon class="fa-solid fa-ellipsis-vertical"></icon> and then Edit.
 
 2. In the service account details, click <b>Show domain-wide delegation</b>, then ensure the <b>Enable G Suite Domain-wide Delegation </b>checkbox is checked.
 
@@ -157,7 +180,7 @@ Click <b>Authorize</b>.
 
 ### Making the Service Account communicate with the Admin SDK securely
 
-1. Create a secret on Google Secret Manager. This can be found in the cloud console => Menu => Security => Secret Manager
+1. Create a secret on Google Secret Manager. This can be found in the **cloud console => Menu => Security => Secret Manager**
 
 2. Click <b>Create Secret</b> using the content of JSON file you had downloaded earlier. You can name the secret anything you want.
 
@@ -176,3 +199,15 @@ async function accessSecretVersion() {
       });
 
 ```
+
+## Deploying The Final Version
+
+1. Head back to the [Google Cloud Console] (https://console.cloud.google.com/)
+
+2. Click on the **Activate Cloud Shell** link in the top right or go to [Shell editor](https://shell.cloud.google.com/)
+
+3. Please ensure your project is selected using `gcloud config set project [PROJECT_ID]`
+
+4. To deploy, use `gcloud app deploy`
+
+This will take some time to deploy. Once completed, you will get the link to deployed app.
