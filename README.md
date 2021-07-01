@@ -203,7 +203,7 @@ async function accessSecretVersion() {
 
 ## Deploying The Final Version
 
-1. Head back to the [Google Cloud Console] (https://console.cloud.google.com/)
+1. Head back to the [Google Cloud Console](https://console.cloud.google.com/)
 
 2. Click on the **Activate Cloud Shell** link in the top right or go to [Shell editor](https://shell.cloud.google.com/)
 
