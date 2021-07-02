@@ -40,7 +40,8 @@ const authorizeDirectory = async function () {
     async function accessSecretVersion() {
       const [version] = await client.accessSecretVersion({
         name:
-          'projects/codename-shikhsha/secrets/app-engine-shikhsha/versions/latest',
+        //Replace with path to secret
+          'projects/projectname/secrets/app-engine-XXXX/versions/latest',
       });
 
       // Extract the payload as a string.
@@ -54,7 +55,8 @@ const authorizeDirectory = async function () {
     var jwt = new google.auth.JWT({
       email: jsonKey.client_email,
       key: jsonKey.private_key,
-      subject: 'admin@cloudworker.solutions',
+      //Replace with admin user
+      subject: 'admin@your.domain',
       scopes: scopes,
     });
 
@@ -80,7 +82,8 @@ const listUsers = async function (res) {
   // list the first 10 users
   admin.users.list(
     {
-      domain: 'cloudworker.solutions',
+      //Replace with your domain
+      domain: 'your.domain',
       maxResults: 10,
       orderBy: 'email',
     },
