@@ -55,7 +55,7 @@ const authorizeDirectory = async function () {
     var jwt = new google.auth.JWT({
       email: jsonKey.client_email,
       key: jsonKey.private_key,
-      //Replace with admin user
+      //Replace with admin user to impersonate
       subject: 'admin@your.domain',
       scopes: scopes,
     });
