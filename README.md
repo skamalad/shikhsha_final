@@ -4,6 +4,7 @@ Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof 
 
 This project is not maintained or distributed by Google. Please use it as a basis to explore your own solution.
 
+---
 
 #### How is Shiksha built?
 
@@ -11,6 +12,7 @@ Shikhsha is built on Google Cloud Platform App Engine: a highly scalable and ful
 
 Read about [App Engine here](https://cloud.google.com/appengine) and information about[ Node.js on App Engine here](https://cloud.google.com/appengine/docs/nodejs).
 
+---
 
 #### Google Cloud Platform components overview:
 
@@ -24,11 +26,13 @@ Read about [App Engine here](https://cloud.google.com/appengine) and information
 
 **APIs:** REST APIs which allow the application to programmatically interact with the Google Workspace tenant and specific GCP components to support building the app and [securing/calling the JSON key](https://cloud.google.com/iam/docs/understanding-service-accounts#managing_service_account_keys) used for authentication.
 
+---
 
 #### GCP Costs:
 
 Depending on how the resources used in this app are configured and the extent of usage, GCP charges may be incurred. Ensure you read the documentation thoroughly before deploying and consult the [GCP pricing calculator](https://cloud.google.com/products/calculator) for an estimate.
 
+---
 
 #### Prerequisites:
 
@@ -45,6 +49,7 @@ Depending on how the resources used in this app are configured and the extent of
 
 _While not essential, a good understanding of GCP/App Engine, Google Workspace and JavaScript/HTML/CSS is recommended in order to understand how the application works._
 
+---
 
 #### Groups:
 
@@ -68,6 +73,7 @@ _Considerations:_
 *   Nested groups (groups within a group) are not supported within the Shikhsha application itself.
 *   Nested groups _are_ supported by Identity-Aware Proxy, which streamliness management of accounts allowed to access the Shikhsha application.
 
+---
 
 #### Security:
 
@@ -86,6 +92,7 @@ _Best practice security considerations should always apply._ In the case of Proj
     *   For allowed Groups, be sure that [membership is invite only](https://support.google.com/groups/answer/2464926?hl=en&ref_topic=2458761#:~:text=Only%20invited%20users%E2%80%94People%20have%20to%20be%20invited%20to%20join%20the%20group.%20They%20can%27t%20add%20themselves%20directly%20or%20ask%20to%20join.), users added are only [Group Members](https://support.google.com/groups/answer/2464926?hl=en&ref_topic=2458761#:~:text=By%20default%2C%20group,managers%20and%20owners.) and consider disabling all other visibility/functionality.
     *   **Strongly consider** forcing all users who will be able to reset passwords (e.g teachers) to turn on 2FA. As users who would already have access to student PII and communications, it’s expected that this is likely already in place.
 
+---
 
 #### Logging:
 
@@ -97,6 +104,7 @@ The actual user who performed a password reset can be viewed in Cloud Logging - 
 
 _(Query string here)_
 
+---
 
 #### Requirements:
 
@@ -112,6 +120,7 @@ _(Query string here)_
 *   Developer email address to be used in OAuth contact information
 *   A familiarity with GCP/App Engine, Google Workspace, JavaScript/HTML/CSS is highly recommended.
 
+---
 
 #### Deploying to Google Cloud Platform:
 
@@ -119,6 +128,7 @@ This guide makes use of [Cloud Shell](https://cloud.google.com/shell) in order t
 
 If you are unfamiliar with Google Cloud Platform, use the hamburger icon in the upper left corner to pop out the navigation menu. 
 
+---
 
 #### Walkthrough:
 
