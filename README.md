@@ -18,7 +18,7 @@ Read about [App Engine here](https://cloud.google.com/appengine) and information
 
 **Identity Aware Proxy** is used to control access to the App Engine app itself. IAP restricts resource access to only specified Google user accounts and groups. Depending on how IAP is configured,[ there is no charge for the service.](https://cloud.google.com/iap?hl=en#:~:text=Identity-Aware%20Proxy%20includes%20a%20number%20of%20features%20that%20can%20be%20used%20to%20protect%20access%20to%20Google%20Cloud%20hosted%20resources%20and%20applications%20hosted%20on%20Google%20Cloud%20at%20no%20charge)
 
-**Secret Manager **secures the private oauth JSON key used by a service account to [authenticate ](https://cloud.google.com/docs/authentication)the Shikhsha application against Admin SDK APIs. [Secret Manager is a chargeable service](https://cloud.google.com/secret-manager/pricing), but has a free tier. 
+**Secret Manager** secures the private oauth JSON key used by a service account to [authenticate ](https://cloud.google.com/docs/authentication)the Shikhsha application against Admin SDK APIs. [Secret Manager is a chargeable service](https://cloud.google.com/secret-manager/pricing), but has a free tier. 
 
 **Service account:** is used for app authentication against the Admin SDK APIs. The[ service account ](https://cloud.google.com/iam/docs/service-accounts)is granted domain-wide delegation in order to be able to trigger a password reset for all users in scope.
 
