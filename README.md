@@ -231,10 +231,10 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
 
 
 
-*   Set the GCP project by running  ```gcloud config set project [PROJECT\_ID]```
+*   Set the GCP project by running  ```gcloud config set project [PROJECT_ID]```
 *   Clone the code from the Github repository: ```git clone https://github.com/XXXXX/XXXXXXXX.git```
 *   Change into the new folder with the Shikhsha PoC code.
-*   Install dependencies: _npm install_
+*   Install dependencies: ```npm install```
 *   Modify the following with values for your environment, locations as per comments in the code:
     *   ```config/config.env``` (defines the group prefix that will be prepended to searchable groups)
     *   ```routes/auth.js``` (domain name for your workspace tenant and the delegated admin variables)
