@@ -71,7 +71,7 @@ _Considerations:_
 
 #### Security:
 
-_Best practice security considerations should always apply. _In the case of Project Shikhsha, the intent is to allow a “normal” user account permission to reset another “normal” account’s password. This carries significant risk, so planning, caution and thorough testing should be used when configuring and deploying the application. Some things to consider:
+_Best practice security considerations should always apply._ In the case of Project Shikhsha, the intent is to allow a “normal” user account permission to reset another “normal” account’s password. This carries significant risk, so planning, caution and thorough testing should be used when configuring and deploying the application. Some things to consider:
 
 
 
