@@ -171,7 +171,7 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 *   Click Create Service Account, enter a name (default is ok) and description, then click create.
-*   Click the three dots listed under the Action menu_ _for the new service account, then choose Manage keys
+*   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys
 *   From the Add Key dropdown click Create Key. 
 *   Choose JSON and click create.
 *   The JSON key is downloaded to your local machine. This will be used in a later step.
