@@ -233,7 +233,7 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
 
 *   Set the GCP project by running  ```gcloud config set project [PROJECT_ID]```
 *   Clone the code from the Github repository: ```git clone https://github.com/XXXXX/XXXXXXXX.git```
-*   Change into the new folder with the Shikhsha PoC code.
+*   Change directory into the new folder with the Shikhsha PoC code.
 *   Install dependencies: ```npm install```
 *   Modify the following files with values for your environment, edit as per comments in the code:
     *   ```config/config.env``` (defines the group prefix that will be prepended to searchable groups)
