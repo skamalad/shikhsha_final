@@ -66,7 +66,7 @@ _Considerations:_
 *   The user who is responsible for resetting passwords must be a member of the group which they want to reset passwords for.
 *   If the two prerequisites above are not met, then a group (and subsequently users of the group) which is expected to be visible in the application will not be available.
 *   Nested groups (groups within a group) are not supported within the Shikhsha application itself.
-*   Nested groups _are _supported by Identity-Aware Proxy, which streamliness management of accounts allowed to access the Shikhsha application.
+*   Nested groups _are_ supported by Identity-Aware Proxy, which streamliness management of accounts allowed to access the Shikhsha application.
 
 
 #### Security:
