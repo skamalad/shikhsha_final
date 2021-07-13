@@ -72,12 +72,13 @@ router.get('/group/:groupid', isUserAuthenticated, async (req, res) => {
     pages.push({ page: i * 10, label: i + 1, active: i === from / 10 });
 
   res.render('groups', {
-    members: members.results,
+    members: (members.results || []).filter((result) => result.type === 'USER'),
     total: members.total,
     groupid: groupid,
     from: from,
     pages: pages,
   });
+  console.log('RETURNING MEMBER', members.results);
   // res.send(`Group ID = ${req.params.groupid}`);
 });
 

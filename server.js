@@ -63,8 +63,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', require('./routes/index'));
 // app.use('/auth', require('./routes/auth').listUsers);
 
-const PORT = process.env.PORT || 8081;
-// const PORT = 8081;
+// const PORT = process.env.PORT || 8081;
+const PORT = 8081;
 
 app.listen(
   PORT,
