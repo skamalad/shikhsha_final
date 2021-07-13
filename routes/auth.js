@@ -39,9 +39,7 @@ const authorizeDirectory = async function () {
 
     async function accessSecretVersion() {
       const [version] = await client.accessSecretVersion({
-        name:
-        //Replace with path to secret
-          'projects/projectname/secrets/app-engine-XXXX/versions/latest',
+        name: `projects/codename-shikhsha/secrets/${process.env.APP_ENGINE_NAME}/versions/latest`,
       });
 
       // Extract the payload as a string.
@@ -55,8 +53,7 @@ const authorizeDirectory = async function () {
     var jwt = new google.auth.JWT({
       email: jsonKey.client_email,
       key: jsonKey.private_key,
-      //Replace with admin user to impersonate
-      subject: 'admin@your.domain',
+      subject: process.env.JWT_SUBJECT,
       scopes: scopes,
     });
 
@@ -82,8 +79,7 @@ const listUsers = async function (res) {
   // list the first 10 users
   admin.users.list(
     {
-      //Replace with your domain
-      domain: 'your.domain',
+      domain: process.env.DOMAIN,
       maxResults: 10,
       orderBy: 'email',
     },
