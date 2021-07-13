@@ -1,5 +1,5 @@
 node_modules
 response.json
 pwdValidation.js
-config.env
+config/config.env
 
