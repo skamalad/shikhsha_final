@@ -1,6 +1,6 @@
 #### Overview:
 
-Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof of concept application to support scaled access to reset user passwords in a Google Workspace for Education tenant. It will also work for non-Edu Google Workspace tenants. Whilst the Google admin console facilitates delegated administration, it is not scalable or tightly scoped enough for education entities at country or state level to allow (for example) tens of thousands of individual teachers to reset_ only _the Google account password for students directly in their classes.
+Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof of concept application to support scaled access to reset user passwords in a Google Workspace for Education tenant. It will also work for non-Edu Google Workspace tenants. Whilst the Google admin console facilitates delegated administration, it is not scalable or tightly scoped enough for education entities at country or state level to allow (for example) tens of thousands of individual teachers to reset _only_ the Google account password for students directly in their classes.
 
 This project is not maintained or distributed by Google. Please use it as a basis to explore your own solution.
 
@@ -71,7 +71,7 @@ _Considerations:_
 *   The user who is responsible for resetting passwords must be a member of the group which they want to reset passwords for.
 *   If the two prerequisites above are not met, then a group (and subsequently users of the group) which is expected to be visible in the application will not be available.
 *   Nested groups (groups within a group) are not supported within the Shikhsha application itself.
-*   Nested groups _are_ supported by Identity-Aware Proxy, which streamliness management of accounts allowed to access the Shikhsha application.
+*   Nested groups _are_ supported by Identity-Aware Proxy, which streamlines management of accounts allowed to access the Shikhsha application.
 
 ---
 
@@ -250,16 +250,16 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
     *   ```routes/auth.js``` (domain name for your workspace tenant and the delegated admin variables)
     *   ```routes/auth.js``` (path to secret)
 
-The path to secret needs to be in following format_: _
+The path to secret needs to be in following format: 
 
 ```projects/PROJECTNAME/secrets/SECRETKEYNAME/versions/latest```
 
-Replace PROJECTNAME with your GCP project name and SECRETKEYNAME with the name of your secret key._ _ 
+Replace PROJECTNAME with your GCP project name and SECRETKEYNAME with the name of your secret key.
 
 
 ##### Deploy
 
-To deploy, ensure you are in the root folder of the project (check the app.yaml file is in the same directory) and run:_ _
+To deploy, ensure you are in the root folder of the project (check the app.yaml file is in the same directory) and run:
 
 ```gcloud app deploy```
 
