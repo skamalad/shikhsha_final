@@ -34,20 +34,23 @@ Depending on how the resources used in this app are configured and the extent of
 
 ---
 
-#### Prerequisites:
+#### Prerequisites before beginning deployment:
 
 
 
 *   Super admin access to your Google Workspace tenant 
-*   Create a delegated administrator account for your Google Workspace tenant that can be used solely for this project. The administrator account needs to have permission for XXXXXX.
+*   Create a custom delegated administrator role with Admin API privileges for: Users > Read, Users > Reset Password and Groups > Read.
+*   Create an account to use with the custom delegated administrator role. This account will "act" on behalf of the Shikhsha application to reset user passwords. As this account will not use any Google services, it has no need for a Workspace license and can have all Workspace services disabled. 
 *   Ability to create a new Google Cloud Platform project, or appropriate permissions to enable required APIs and services if using an existing project.
 *   GCP billing configured: whilst this proof-of-concept can be deployed in a manner to use services which all run on the free tier, billing is required as they are chargeable based on usage or configuration.
 *   _For the following, ensure you read Groups considerations below:_
-    *   A Workspace Group(s) to control IAP access to the application
-    *   Workspace Groups(s) which include the user passwords you wish to make available to reset within the application.
-    *   Define a prefix which can be prepended to the groups used for password reset.
+    *   Workspace Groups created and populated to control IAP access to the application
+    *   Workspace Groups created and populated for controlling access to groups of users whose passwords can be reset by authorised entities (e.g teachers can see their direct students and reset only those passwords)
+*   Define a prefix to be used in front of all Groups that may be visible within the Shikhsha application.
+*   Email address to be used (individual or group) as a contact on the OAuth consent screen.
+*   Developer email address to be used in OAuth contact information
 
-_While not essential, a good understanding of GCP/App Engine, Google Workspace and JavaScript/HTML/CSS is recommended in order to understand how the application works._
+_While not essential, a good understanding of GCP/App Engine, Google Workspace and JavaScript/HTML/CSS is highly recommended in order to understand how the application works._
 
 ---
 
@@ -70,7 +73,7 @@ _Considerations:_
 *   Groups of users which are going to be visible in the reset tool _must_ include a prefix that you specify for controlling user search. The prefix needs to be prepended to the group name, not the email address.
 *   The user who is responsible for resetting passwords must be a member of the group which they want to reset passwords for.
 *   If the two prerequisites above are not met, then a group (and subsequently users of the group) which is expected to be visible in the application will not be available.
-*   Nested groups (groups within a group) are not supported within the Shikhsha application itself.
+*   Nested groups (groups within a group) are not supported within the Shikhsha application itself and are logically filtered out so end users will not see them.
 *   Nested groups _are_ supported by Identity-Aware Proxy, which streamlines management of accounts allowed to access the Shikhsha application.
 
 ---
@@ -85,6 +88,7 @@ _Best practice security considerations should always apply._ In the case of Proj
 *   Shikhsha is only available to users from the Google tenant to which it is deployed. 
 *   The application has [domain wide delegation](https://support.google.com/a/answer/162106?hl=en&ref_topic=10021546) to make changes to user passwords. 
 *   The app is further restricted in the operations it can perform by [OAuth scopes](https://developers.google.com/identity/protocols/oauth2/scopes#admin-directory): only user and group access is specified.
+*   The user account which is created to "act" as Shikhsha has permission to operate over API only, and to read users and groups and reset passwords and has no access to any other Google service.
 *   The service account used for server to server (Shikhsha > Google APIs) authentication generates a unique key. Secret Manager is used to securely store this key, which is retrieved by the app only when making a call which requires authentication. Secret Manager can be configured to rotate this key on a regular basis, amongst other things.
 *   The following points elaborate on more granular access control.
     *   App access is restricted to allowed Google Groups only by IAP. 
@@ -98,27 +102,11 @@ _Best practice security considerations should always apply._ In the case of Proj
 
 App Engine and other GCP services will create logs in Cloud Logging both during deployment and operation of the application. This includes access logs, errors and actions taken by users (e.g - reset a password. Just like other GCP components, Cloud Logging is only accessible to developers who have been granted access to the project with appropriate permissions.
 
-When a password is changed via Shikhsha, Google Workspace will report this in the [admin audit log](https://support.google.com/a/answer/4579579?hl=en) as being changed by a single user account (acting on behalf of the “service” account), regardless of which specific end user actually made the change - this single user is specified during the app configuration and deployment process (see below). This is standard behaviour when delegating permission to a third party application which is performing operations via API.
+When a password is changed via Shikhsha, Google Workspace will report this in the [admin audit log](https://support.google.com/a/answer/4579579?hl=en) as being changed by the delegated admin user (acting on behalf of the “service” account), regardless of which specific end user actually made the change - this single user is specified during the app configuration and deployment process (see below). This is standard behaviour when delegating permission to a third party application which is performing operations via API.
 
 The actual user who performed a password reset can be viewed in Cloud Logging - the following query string can be used to filter specifically for a reset:
 
 _(Query string here)_
-
----
-
-#### Requirements:
-
-
-
-*   Super admin access to Workspace tenant
-*   Ability to create a new Google Cloud Platform Project (or editor rights on an existing project)
-*   GCP billing configured
-*   Workspace Groups created and populated to use with IAP for application access control
-*   Workspace Groups created and populated for controlling access to groups of users whose passwords can be reset by authorised entities (e.g teachers can see their direct students and reset only those passwords)
-*   A prefix to be used in front of all Groups that may be visible within the Shikhsha application.
-*   Email address to be used (individual or group) as a contact on the OAuth consent screen.
-*   Developer email address to be used in OAuth contact information
-*   A familiarity with GCP/App Engine, Google Workspace, JavaScript/HTML/CSS is highly recommended.
 
 ---
 
@@ -180,9 +168,9 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 
-*   Click Create Service Account, enter a name (default is ok) and description, then click create.
-*   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys
-*   From the Add Key dropdown click Create Key. 
+*   Click Create Service Account, enter a name and description, then click Create and Done. Other options are not required.
+*   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys.
+*   From the Add Key dropdown click Create new key. 
 *   Choose JSON and click create.
 *   The JSON key is downloaded to your local machine. This will be used in a later step.
 *   Click Close.
@@ -245,16 +233,12 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
 *   Clone the code from the Github repository: ```git clone https://github.com/XXXXX/XXXXXXXX.git```
 *   Change directory into the new folder with the Shikhsha PoC code.
 *   Install dependencies: ```npm install```
-*   Modify the following files with values for your environment, edit as per comments in the code:
-    *   ```config/config.env``` (defines the group prefix that will be prepended to searchable groups)
-    *   ```routes/auth.js``` (domain name for your workspace tenant and the delegated admin variables)
-    *   ```routes/auth.js``` (path to secret)
-
-The path to secret needs to be in following format: 
-
-```projects/PROJECTNAME/secrets/SECRETKEYNAME/versions/latest```
-
-Replace PROJECTNAME with your GCP project name and SECRETKEYNAME with the name of your secret key.
+*   All configuration is read from the config.env file. Navigate to /config/sample_config.env file. Modify the file with appropriate variables and save it as config.env.
+    *   ```PORT = 8080``` (Do not modify)
+    *   ```GROUP_PREFIX = 'UM_'``` (Prefix you are using to filter groups visible in the application)
+    *   ```APP_ENGINE_NAME = 'app-engine-XXXXX'``` (Replace XXXXX with your GCP project name)
+    *   ```JWT_SUBJECT = 'xxxxxx@xxxxxx.xxxxxxx'``` (Replace with the name of the delegated admin "user" who will act on behalf of the Shikhsha app)
+    *   ```DOMAIN = 'xxxxxx.xxxxxxx'``` (Replace with the Workspace domain name).
 
 
 ##### Deploy
