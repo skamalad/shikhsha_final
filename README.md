@@ -135,6 +135,7 @@ Navigate to APIs and Services > Dashboard. Enable the following APIs:
 *   Admin SDK API
 *   Secret Manager API
 *   Cloud Build API
+*   IAP API
 
 
 ##### Link/create billing account
