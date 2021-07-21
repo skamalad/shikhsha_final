@@ -39,7 +39,7 @@ const authorizeDirectory = async function () {
 
     async function accessSecretVersion() {
       const [version] = await client.accessSecretVersion({
-        name: `projects/codename-shikhsha/secrets/${process.env.APP_ENGINE_NAME}/versions/latest`,
+        name: `projects/${process.env.PROJECT_ID}/secrets/${process.env.SECRET_KEY_NAME}/versions/latest`,
       });
 
       // Extract the payload as a string.
