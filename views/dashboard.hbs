@@ -2,6 +2,11 @@
     <div class="searchWrapper">
         {{!-- <input type="text" name="searchBar" id="searchBar" placeholder="search for a group" /> --}}
     </div>
+
+    {{#if error}}
+        <p class="err-msg">{{this.error}}</p>
+    {{else}}
+
     <div class="box">
         <h2>List of your groups</h2>
         <ul class="userList" id="user-list">
@@ -13,3 +18,4 @@
         </ul>
     </div>
 </div>
+{{/if}}
