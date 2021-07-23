@@ -40,7 +40,7 @@ Depending on how the resources used in this app are configured and the extent of
 
 *   Super admin access to your Google Workspace tenant 
 *   Create a custom delegated administrator role with Admin API privileges for: Users > Read, Users > Reset Password and Groups > Read.
-*   Create an account to use with the custom delegated administrator role. This account will "act" on behalf of the Shikhsha application to reset user passwords. As this account will not use any Google services, it has no need for a Workspace license and can have all Workspace services disabled. 
+*   Create an account to use with the custom delegated administrator role and to have access to the service account which will be created in the walkthrough. This account will "act" on behalf of the Shikhsha application to reset user passwords. As this account will not use any Workspace applications, it has no need for a Workspace license and can have all Workspace apps and services disabled. 
 *   Ability to create a new Google Cloud Platform project, or appropriate permissions to enable required APIs and services if using an existing project.
 *   GCP billing configured: whilst this proof-of-concept can be deployed in a manner to use services which all run on the free tier, billing is required as they are chargeable based on usage or configuration.
 *   _For the following, ensure you read Groups considerations below:_
@@ -169,12 +169,14 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 
-*   Click Create Service Account, enter a name and description, then click Create and Done. Other options are not required.
+*   Click Create Service Account, enter a name and description, then click Create.
+*   Click continue to skip past the optional grant this service account access to project.
+*   Under Grant users access to this service account, enter the email address of the account you created to act on behalf of the Shikhsha application and click done.
 *   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys.
 *   From the Add Key dropdown click Create new key. 
 *   Choose JSON and click create.
 *   The JSON key is downloaded to your local machine. This will be used in a later step.
-*   Click Close.
+*   Click Close and then the back arrow to return to the list of service accounts.
 *   _Make a note of the service account name (e.g serviceaccountname@appspot.gserviceaccount.com) - you’ll need this in a later step._
 
 
@@ -184,7 +186,7 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 
-*   Expand the Show domain-wide delegation section, and check the box to enable Google Workspace Domain-wide Delegation_, _then save.
+*   Expand the Show domain-wide delegation section, check the box to enable Google Workspace Domain-wide Delegation, then save.
 *   _Make a note of the Unique ID._
 
 In a new browser tab, navigate to the[ Google admin console](https://admin.google.com) and log in as a super administrator. 
@@ -219,7 +221,7 @@ In the Google Cloud Platform console navigate to Security > Secret Manager.
 
 *   Click on the name of the secret created in the last step.
 *   Click on the Permissions tab, then the Add button.
-*   In the New Member popover window, paste the name of the Service Account you created earlier (e.g serviceaccountname@appspot.gserviceaccount.com).
+*   In the New Member popover window, paste the name of the default App Engine service Account (e.g serviceaccountname@appspot.gserviceaccount.com).
 *   Under the Select a Role dropdown search for the Secret Manager Secret Assessor role, and select it, then click save.
 *   _This permission only allows the service account to read the JSON key managed by Secret Manager._
 
@@ -236,8 +238,9 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
 *   Install dependencies: ```npm install```
 *   All configuration is read from the config.env file. Navigate to /config/sample_config.env file. Modify the file with appropriate variables and save it as config.env.
     *   ```PORT = 8080``` (Do not modify)
-    *   ```GROUP_PREFIX = 'UM_'``` (Prefix you are using to filter groups visible in the application)
-    *   ```APP_ENGINE_NAME = 'app-engine-XXXXX'``` (Replace XXXXX with your GCP project name)
+    *   ```GROUP_PREFIX = 'UM_'``` (Prefix used to filter groups visible in the application)
+    *   ```PROJECT_ID = 'your_project``` (Replace your_project with the name of the GCP project)
+    *   ```SECRET_KEY_NAME = 'secret_key'``` (Replace secret_key with the secret key name)
     *   ```JWT_SUBJECT = 'xxxxxx@xxxxxx.xxxxxxx'``` (Replace with the name of the delegated admin "user" who will act on behalf of the Shikhsha app)
     *   ```DOMAIN = 'xxxxxx.xxxxxxx'``` (Replace with the Workspace domain name).
 
@@ -248,7 +251,13 @@ To deploy, ensure you are in the root folder of the project (check the app.yaml 
 
 ```gcloud app deploy```
 
-The app will take a while to deploy. Once complete, navigate back to App Engine > Versions. The app will be listed - click the link under Version (listed as a date/time stamp) to open the Application in a new browser tab.
+A prompt will appear to authorise Cloud Shell to make a GCP API call - click Authorise. You will be presented with a summary of services to enable: type y and enter to continue.
+
+The app will take a while to deploy. On first run the error: ```ERROR: (gcloud.app.deploy) NOT_FOUND: Unable to retrieve P4SA:``` may appear while the deployment service account (automatically created) propagates. If so, run ```gcloud app deploy``` again.
+
+Once complete, it will still take a few minutes to spin up - grab a coffee. 
+
+Navigate back to App Engine > Dashboard. In the upper right of the window you'll see a link to launch the app - click it.
 
 At this point the application should be deployed and functional. If there is a blank screen when you try to access the app, or NGINX shows a timeout error, consult Cloud Logging to troubleshoot.
 
