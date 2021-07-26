@@ -170,7 +170,7 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 *   Click Create Service Account, enter a name and description, then click Create.
-*   Click continue to skip past the optional grant this service account access to project.
+*   Under grant this service account access to project search for "Secret Manager Secret Assessor", select it and click continue.
 *   Under Grant users access to this service account, enter the email address of the account you created to act on behalf of the Shikhsha application and click done.
 *   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys.
 *   From the Add Key dropdown click Create new key. 
@@ -216,16 +216,6 @@ In the Google Cloud Platform console navigate to Security > Secret Manager.
 *   Click Create Secret.
 
 
-##### Add App Engine Service account to Secret Manager key permissions.
-
-
-*   Click on the name of the secret created in the last step.
-*   Click on the Permissions tab, then the Add button.
-*   In the New Member popover window, paste the name of the default App Engine service Account (e.g serviceaccountname@appspot.gserviceaccount.com).
-*   Under the Select a Role dropdown search for the Secret Manager Secret Assessor role, and select it, then click save.
-*   _This permission only allows the service account to read the JSON key managed by Secret Manager._
-
-
 ##### Launch Cloudshell
 
 Click on the Activate Cloud Shell link in the top right corner of the window or open the [Shell editor](https://shell.cloud.google.com/) in another tab. Alternatively you can use your local development environment to complete the rest of the steps.
@@ -244,6 +234,8 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
     *   ```JWT_SUBJECT = 'xxxxxx@xxxxxx.xxxxxxx'``` (Replace with the name of the delegated admin "user" who will act on behalf of the Shikhsha app)
     *   ```DOMAIN = 'xxxxxx.xxxxxxx'``` (Replace with the Workspace domain name).
 
+*Ensure that any comments are deleted from the config.env file before deploying. Comments in an environment file that aren't on their own line will be read as a part of the variable and cause the app to be non functional.*
+
 
 ##### Deploy
 
@@ -257,12 +249,9 @@ The app will take a while to deploy. On first run the error: ```ERROR: (gcloud.a
 
 Once complete, it will still take a few minutes to spin up - grab a coffee. 
 
-Navigate back to App Engine > Dashboard. In the upper right of the window you'll see a link to launch the app - click it.
-
-At this point the application should be deployed and functional. If there is a blank screen when you try to access the app, or NGINX shows a timeout error, consult Cloud Logging to troubleshoot.
-
-
 ##### Enable  Identity Aware Proxy
+
+Note that login to the application *will fail* if IAP is not enabled - you will see NGINX errors if you try to access it before turning on IAP.
 
 In order to only allow specified domain users to access the application,[ Identity-Aware Proxy](https://cloud.google.com/iap/docs/managing-access#turning_on_and_off) must be enabled. _Note non-domain users will not be able to access the application regardless of whether IAP is enabled as it is configured as an internal application only: [Google has hard review requirements](https://support.google.com/cloud/answer/9110914?hl=en) before it will allow apps hosted on GCP to request OAuth permissions for public account access._
 
@@ -280,3 +269,9 @@ In order to only allow specified domain users to access the application,[ Identi
 Once IAP is enabled, the first time a user accesses your app they will be redirected to a consent screen to confirm that they want to share their identity with your app. 
 
 This occurs even if the user granted consent to the app _before you enabled IAP_, and will occur again if you disable IAP and then re-enable it.
+
+##### Test the app
+
+Navigate back to App Engine > Dashboard. In the upper right of the window you'll see a link to launch the app - click it.
+
+At this point the application should be deployed and functional. If there is a blank screen when you try to access the app, or NGINX shows a timeout error, view app errors that are listed at the bottom of App Engine > Dashboard.
