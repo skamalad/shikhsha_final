@@ -112,19 +112,16 @@ const listGroups = async function (email) {
   var groups = [];
   const admin = await authorizeDirectory();
 
-  // list the first 10 users
   const resp = await admin.groups.list({
     maxResults: 200,
     userKey: email,
   });
-  console.log('***** LINE SEPARATOR ***********');
+
   groups = resp.data.groups;
-  // console.log(groups)
-  // var resultGroups = groups.map(a => a.name)
   var resultGroups = groups.filter((a) =>
     a.name.includes(process.env.GROUP_PREFIX)
   );
-  console.log(resultGroups);
+
   return resultGroups;
 };
 

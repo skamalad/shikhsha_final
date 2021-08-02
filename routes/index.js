@@ -52,12 +52,16 @@ router.get('/dashboard', isUserAuthenticated, async (req, res) => {
   });
 
   // Serialize to a JSON string and output.
-  console.log(JSON.stringify(entry));
-  const groups = await listGroups(user_email);
-  // console.log(groups)
-  res.render('dashboard', {
-    groups: groups,
-  });
+  // console.log(JSON.stringify(entry));
+  await listGroups(user_email)
+    .then((response) => {
+      res.render('dashboard', {
+        groups: response,
+      });
+    })
+    .catch((error) => {
+      console.log(Error, error);
+    });
 });
 
 // @desc Members of a Group Route

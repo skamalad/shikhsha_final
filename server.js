@@ -65,7 +65,17 @@ app.use('/', require('./routes/index'));
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(
+var server = app.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
+
+process.on('uncaughtException', (err) => {
+  console.error(err);
+  server.close();
+});
+
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM');
+  server.close();
+});
