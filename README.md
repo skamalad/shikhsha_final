@@ -40,7 +40,7 @@ Depending on how the resources used in this app are configured and the extent of
 
 *   Super admin access to your Google Workspace tenant 
 *   Create a custom delegated administrator role with Admin API privileges for: Users > Read, Users > Reset Password and Groups > Read.
-*   Create an account to use with the custom delegated administrator role and to have access to the service account which will be created in the walkthrough. This account will "act" on behalf of the Shikhsha application to reset user passwords. As this account will not use any Workspace applications, it has no need for a Workspace license and can have all Workspace apps and services disabled. 
+*   Create an account to assign to the custom delegated administrator role. This account will effectively "operate" the application and service account which will be created during the walkthrough. This account will act on behalf of the Shikhsha application to reset user passwords. As this account will not use any Workspace applications, it has no need for a Workspace license and can have all Workspace apps and services disabled. 
 *   Ability to create a new Google Cloud Platform project, or appropriate permissions to enable required APIs and services if using an existing project.
 *   GCP billing configured: whilst this proof-of-concept can be deployed in a manner to use services which all run on the free tier, billing is required as they are chargeable based on usage or configuration.
 *   _For the following, ensure you read Groups considerations below:_
@@ -205,9 +205,22 @@ In a new browser tab, navigate to the[ Google admin console](https://admin.googl
 *   Click Authorize.
 
 
+##### Additional IAM accounts
+
+Return to the Google Cloud Console and via the hamburger menu go to IAM & Admin > IAM. Two additional accounts need to be added:
+
+*   Click the Add button
+*   In the New Members box type the name of the user assigned to the custom delegated admin role.
+*   Under Select a role search for App Engine Admin and click save.
+*   Click the Add button again.
+*   In the New Members box type the name of your project followed by @appspot.gserviceaccount.com. This is the default service account for App Engine in your project.
+*   Under Select a role search for Editor and select it.
+*   Click Add another role, search for Secret Manager Secret Assessor and select it, then click save.
+
+
 ##### Configure secret manager
 
-In the Google Cloud Platform console navigate to Security > Secret Manager.
+Navigate to Security > Secret Manager.
 
 
 *   Click Create Secret
