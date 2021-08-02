@@ -1,6 +1,6 @@
 #### Overview:
 
-Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof of concept application to support scaled access to reset user passwords in a Google Workspace for Education tenant. It will also work for non-Edu Google Workspace tenants. Whilst the Google admin console facilitates delegated administration, it is not scalable or tightly scoped enough for education entities at country or state level to allow (for example) tens of thousands of individual teachers to reset_ only _the Google account password for students directly in their classes.
+Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof of concept application to support scaled access to reset user passwords in a Google Workspace for Education tenant. It will also work for non-Edu Google Workspace tenants. Whilst the Google admin console facilitates delegated administration, it is not scalable or tightly scoped enough for education entities at country or state level to allow (for example) tens of thousands of individual teachers to reset _only_ the Google account password for students directly in their classes.
 
 This project is not maintained or distributed by Google. Please use it as a basis to explore your own solution.
 
@@ -34,20 +34,23 @@ Depending on how the resources used in this app are configured and the extent of
 
 ---
 
-#### Prerequisites:
+#### Prerequisites before beginning deployment:
 
 
 
 *   Super admin access to your Google Workspace tenant 
-*   Create a delegated administrator account for your Google Workspace tenant that can be used solely for this project. The administrator account needs to have permission for XXXXXX.
+*   Create a custom delegated administrator role with Admin API privileges for: Users > Read, Users > Reset Password and Groups > Read.
+*   Create an account to assign to the custom delegated administrator role. This account will effectively "operate" the application and service account which will be created during the walkthrough. This account will act on behalf of the Shikhsha application to reset user passwords. As this account will not use any Workspace applications, it has no need for a Workspace license and can have all Workspace apps and services disabled. 
 *   Ability to create a new Google Cloud Platform project, or appropriate permissions to enable required APIs and services if using an existing project.
 *   GCP billing configured: whilst this proof-of-concept can be deployed in a manner to use services which all run on the free tier, billing is required as they are chargeable based on usage or configuration.
 *   _For the following, ensure you read Groups considerations below:_
-    *   A Workspace Group(s) to control IAP access to the application
-    *   Workspace Groups(s) which include the user passwords you wish to make available to reset within the application.
-    *   Define a prefix which can be prepended to the groups used for password reset.
+    *   Workspace Groups created and populated to control IAP access to the application
+    *   Workspace Groups created and populated for controlling access to groups of users whose passwords can be reset by authorised entities (e.g teachers can see their direct students and reset only those passwords)
+*   Define a prefix to be used in front of all Groups that may be visible within the Shikhsha application.
+*   Email address to be used (individual or group) as a contact on the OAuth consent screen.
+*   Developer email address to be used in OAuth contact information
 
-_While not essential, a good understanding of GCP/App Engine, Google Workspace and JavaScript/HTML/CSS is recommended in order to understand how the application works._
+_While not essential, a good understanding of GCP/App Engine, Google Workspace and JavaScript/HTML/CSS is highly recommended in order to understand how the application works._
 
 ---
 
@@ -70,8 +73,8 @@ _Considerations:_
 *   Groups of users which are going to be visible in the reset tool _must_ include a prefix that you specify for controlling user search. The prefix needs to be prepended to the group name, not the email address.
 *   The user who is responsible for resetting passwords must be a member of the group which they want to reset passwords for.
 *   If the two prerequisites above are not met, then a group (and subsequently users of the group) which is expected to be visible in the application will not be available.
-*   Nested groups (groups within a group) are not supported within the Shikhsha application itself.
-*   Nested groups _are_ supported by Identity-Aware Proxy, which streamliness management of accounts allowed to access the Shikhsha application.
+*   Nested groups (groups within a group) are not supported within the Shikhsha application itself and are logically filtered out so end users will not see them.
+*   Nested groups _are_ supported by Identity-Aware Proxy, which streamlines management of accounts allowed to access the Shikhsha application.
 
 ---
 
@@ -85,6 +88,7 @@ _Best practice security considerations should always apply._ In the case of Proj
 *   Shikhsha is only available to users from the Google tenant to which it is deployed. 
 *   The application has [domain wide delegation](https://support.google.com/a/answer/162106?hl=en&ref_topic=10021546) to make changes to user passwords. 
 *   The app is further restricted in the operations it can perform by [OAuth scopes](https://developers.google.com/identity/protocols/oauth2/scopes#admin-directory): only user and group access is specified.
+*   The user account which is created to "act" as Shikhsha has permission to operate over API only, and to read users and groups and reset passwords and has no access to any other Google service.
 *   The service account used for server to server (Shikhsha > Google APIs) authentication generates a unique key. Secret Manager is used to securely store this key, which is retrieved by the app only when making a call which requires authentication. Secret Manager can be configured to rotate this key on a regular basis, amongst other things.
 *   The following points elaborate on more granular access control.
     *   App access is restricted to allowed Google Groups only by IAP. 
@@ -98,27 +102,11 @@ _Best practice security considerations should always apply._ In the case of Proj
 
 App Engine and other GCP services will create logs in Cloud Logging both during deployment and operation of the application. This includes access logs, errors and actions taken by users (e.g - reset a password. Just like other GCP components, Cloud Logging is only accessible to developers who have been granted access to the project with appropriate permissions.
 
-When a password is changed via Shikhsha, Google Workspace will report this in the [admin audit log](https://support.google.com/a/answer/4579579?hl=en) as being changed by a single user account (acting on behalf of the “service” account), regardless of which specific end user actually made the change - this single user is specified during the app configuration and deployment process (see below). This is standard behaviour when delegating permission to a third party application which is performing operations via API.
+When a password is changed via Shikhsha, Google Workspace will report this in the [admin audit log](https://support.google.com/a/answer/4579579?hl=en) as being changed by the delegated admin user (acting on behalf of the “service” account), regardless of which specific end user actually made the change - this single user is specified during the app configuration and deployment process (see below). This is standard behaviour when delegating permission to a third party application which is performing operations via API.
 
 The actual user who performed a password reset can be viewed in Cloud Logging - the following query string can be used to filter specifically for a reset:
 
 _(Query string here)_
-
----
-
-#### Requirements:
-
-
-
-*   Super admin access to Workspace tenant
-*   Ability to create a new Google Cloud Platform Project (or editor rights on an existing project)
-*   GCP billing configured
-*   Workspace Groups created and populated to use with IAP for application access control
-*   Workspace Groups created and populated for controlling access to groups of users whose passwords can be reset by authorised entities (e.g teachers can see their direct students and reset only those passwords)
-*   A prefix to be used in front of all Groups that may be visible within the Shikhsha application.
-*   Email address to be used (individual or group) as a contact on the OAuth consent screen.
-*   Developer email address to be used in OAuth contact information
-*   A familiarity with GCP/App Engine, Google Workspace, JavaScript/HTML/CSS is highly recommended.
 
 ---
 
@@ -147,6 +135,7 @@ Navigate to APIs and Services > Dashboard. Enable the following APIs:
 *   Admin SDK API
 *   Secret Manager API
 *   Cloud Build API
+*   IAP API
 
 
 ##### Link/create billing account
@@ -180,12 +169,14 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 
-*   Click Create Service Account, enter a name (default is ok) and description, then click create.
-*   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys
-*   From the Add Key dropdown click Create Key. 
+*   Click Create Service Account, enter a name and description, then click Create.
+*   Under grant this service account access to project search for "Secret Manager Secret Assessor", select it and click continue.
+*   Under Grant users access to this service account, enter the email address of the account you created to act on behalf of the Shikhsha application and click done.
+*   Click the three dots listed under the Action menu next to the newly created service account, then choose Manage keys.
+*   From the Add Key dropdown click Create new key. 
 *   Choose JSON and click create.
 *   The JSON key is downloaded to your local machine. This will be used in a later step.
-*   Click Close.
+*   Click Close and then the back arrow to return to the list of service accounts.
 *   _Make a note of the service account name (e.g serviceaccountname@appspot.gserviceaccount.com) - you’ll need this in a later step._
 
 
@@ -195,7 +186,7 @@ Navigate to IAM and Admin > Service Accounts. You may be prompted to select your
 
 
 
-*   Expand the Show domain-wide delegation section, and check the box to enable Google Workspace Domain-wide Delegation_, _then save.
+*   Expand the Show domain-wide delegation section, check the box to enable Google Workspace Domain-wide Delegation, then save.
 *   _Make a note of the Unique ID._
 
 In a new browser tab, navigate to the[ Google admin console](https://admin.google.com) and log in as a super administrator. 
@@ -214,25 +205,28 @@ In a new browser tab, navigate to the[ Google admin console](https://admin.googl
 *   Click Authorize.
 
 
+##### Additional IAM accounts
+
+Return to the Google Cloud Console and via the hamburger menu go to IAM & Admin > IAM. Two additional accounts need to be added:
+
+*   Click the Add button
+*   In the New Members box type the name of the user assigned to the custom delegated admin role.
+*   Under Select a role search for App Engine Admin and click save.
+*   Click the Add button again.
+*   In the New Members box type the name of your project followed by @appspot.gserviceaccount.com. This is the default service account for App Engine in your project.
+*   Under Select a role search for Editor and select it.
+*   Click Add another role, search for Secret Manager Secret Assessor and select it, then click save.
+
+
 ##### Configure secret manager
 
-In the Google Cloud Platform console navigate to Security > Secret Manager.
+Navigate to Security > Secret Manager.
 
 
 *   Click Create Secret
 *   Name your secret, and use the Browse option to upload the JSON key you previously saved to your local machine.
 *   _Replication policy, Encryption, Rotation, Notifications and Expiration can all be optionally configured, however are not required. Consult the [Secret Manager documentation](https://cloud.google.com/secret-manager/docs) for further details._
 *   Click Create Secret.
-
-
-##### Add App Engine Service account to Secret Manager key permissions.
-
-
-*   Click on the name of the secret created in the last step.
-*   Click on the Permissions tab, then the Add button.
-*   In the New Member popover window, paste the name of the Service Account you created earlier (e.g serviceaccountname@appspot.gserviceaccount.com).
-*   Under the Select a Role dropdown search for the Secret Manager Secret Assessor role, and select it, then click save.
-*   _This permission only allows the service account to read the JSON key managed by Secret Manager._
 
 
 ##### Launch Cloudshell
@@ -245,30 +239,32 @@ Click on the Activate Cloud Shell link in the top right corner of the window or 
 *   Clone the code from the Github repository: ```git clone https://github.com/XXXXX/XXXXXXXX.git```
 *   Change directory into the new folder with the Shikhsha PoC code.
 *   Install dependencies: ```npm install```
-*   Modify the following files with values for your environment, edit as per comments in the code:
-    *   ```config/config.env``` (defines the group prefix that will be prepended to searchable groups)
-    *   ```routes/auth.js``` (domain name for your workspace tenant and the delegated admin variables)
-    *   ```routes/auth.js``` (path to secret)
+*   All configuration is read from the config.env file. Navigate to /config/sample_config.env file. Modify the file with appropriate variables and save it as config.env.
+    *   ```PORT = 8080``` (Do not modify)
+    *   ```GROUP_PREFIX = 'UM_'``` (Prefix used to filter groups visible in the application)
+    *   ```PROJECT_ID = 'your_project``` (Replace your_project with the name of the GCP project)
+    *   ```SECRET_KEY_NAME = 'secret_key'``` (Replace secret_key with the secret key name)
+    *   ```JWT_SUBJECT = 'xxxxxx@xxxxxx.xxxxxxx'``` (Replace with the name of the delegated admin "user" who will act on behalf of the Shikhsha app)
+    *   ```DOMAIN = 'xxxxxx.xxxxxxx'``` (Replace with the Workspace domain name).
 
-The path to secret needs to be in following format_: _
-
-```projects/PROJECTNAME/secrets/SECRETKEYNAME/versions/latest```
-
-Replace PROJECTNAME with your GCP project name and SECRETKEYNAME with the name of your secret key._ _ 
+*Ensure that any comments are deleted from the config.env file before deploying. Comments in an environment file that aren't on their own line will be read as a part of the variable and cause the app to be non functional.*
 
 
 ##### Deploy
 
-To deploy, ensure you are in the root folder of the project (check the app.yaml file is in the same directory) and run:_ _
+To deploy, ensure you are in the root folder of the project (check the app.yaml file is in the same directory) and run:
 
 ```gcloud app deploy```
 
-The app will take a while to deploy. Once complete, navigate back to App Engine > Versions. The app will be listed - click the link under Version (listed as a date/time stamp) to open the Application in a new browser tab.
+A prompt will appear to authorise Cloud Shell to make a GCP API call - click Authorise. You will be presented with a summary of services to enable: type y and enter to continue.
 
-At this point the application should be deployed and functional. If there is a blank screen when you try to access the app, or NGINX shows a timeout error, consult Cloud Logging to troubleshoot.
+The app will take a while to deploy. On first run the error: ```ERROR: (gcloud.app.deploy) NOT_FOUND: Unable to retrieve P4SA:``` may appear while the deployment service account (automatically created) propagates. If so, run ```gcloud app deploy``` again.
 
+Once complete, it will still take a few minutes to spin up - grab a coffee. 
 
 ##### Enable  Identity Aware Proxy
+
+Note that login to the application *will fail* if IAP is not enabled - you will see NGINX errors if you try to access it before turning on IAP.
 
 In order to only allow specified domain users to access the application,[ Identity-Aware Proxy](https://cloud.google.com/iap/docs/managing-access#turning_on_and_off) must be enabled. _Note non-domain users will not be able to access the application regardless of whether IAP is enabled as it is configured as an internal application only: [Google has hard review requirements](https://support.google.com/cloud/answer/9110914?hl=en) before it will allow apps hosted on GCP to request OAuth permissions for public account access._
 
@@ -286,3 +282,9 @@ In order to only allow specified domain users to access the application,[ Identi
 Once IAP is enabled, the first time a user accesses your app they will be redirected to a consent screen to confirm that they want to share their identity with your app. 
 
 This occurs even if the user granted consent to the app _before you enabled IAP_, and will occur again if you disable IAP and then re-enable it.
+
+##### Test the app
+
+Navigate back to App Engine > Dashboard. In the upper right of the window you'll see a link to launch the app - click it.
+
+At this point the application should be deployed and functional. If there is a blank screen when you try to access the app, or NGINX shows a timeout error, view app errors that are listed at the bottom of App Engine > Dashboard.
