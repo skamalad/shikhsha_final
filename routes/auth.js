@@ -70,42 +70,6 @@ const authorizeDirectory = async function () {
   return admin;
 };
 
-/**
- * Lists the first 10 users in the domain.
- *
- */
-const listUsers = async function (res) {
-  const admin = await authorizeDirectory();
-  // list the first 10 users
-  admin.users.list(
-    {
-      domain: process.env.DOMAIN,
-      maxResults: 10,
-      orderBy: 'email',
-    },
-    (err, resp) => {
-      if (err) return console.error('The API returned an error:', err);
-
-      const users = resp.data.users;
-      //   res.status(200);
-      var usersStr = '';
-      if (users.length) {
-        console.log('Users:');
-        users.forEach((user) => {
-          usersStr =
-            usersStr + `${user.primaryEmail} (${user.name.fullName})<br>`;
-          console.log(`${user.primaryEmail} (${user.name.fullName})`);
-        });
-      } else {
-        usersStr = 'No users found.';
-        console.log('No users found.');
-      }
-      //   res.send(usersStr);
-      res.end();
-    }
-  );
-};
-
 // **** Lists the groups ****
 
 const listGroups = async function (email) {
@@ -127,6 +91,6 @@ const listGroups = async function (email) {
 
 module.exports = {
   authorizeDirectory,
-  listUsers,
+  // listUsers,
   listGroups,
 };

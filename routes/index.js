@@ -1,16 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { isUserAuthenticated } = require('../middleware/authMiddleware');
-const { listUsers, listGroups } = require('./auth');
+const { listGroups } = require('./auth');
 const groupUsers = require('../util/userList');
 const userInfo = require('../util/userProfile');
 const getMember = require('../util/getMember');
 const updatePassword = require('../util/updatePassword');
 const md5 = require('md5');
-var sha1 = require('sha1');
-const { validationResult } = require('express-validator');
-const { validateConfirmPassword } = require('../middleware/validator');
-var cache = require('../util/memoryCache');
 const { response } = require('express');
 
 var user_email = '';
@@ -37,7 +33,6 @@ router.get('/', isUserAuthenticated, async (req, res) => {
 // @desc Dashboard
 // @route GET /dasboard
 router.get('/dashboard', isUserAuthenticated, async (req, res) => {
-  console.log('****** FROM DASHBOARD PAGE **************');
   if (process.env.NODE_ENV === 'development') {
     user_email = 'sachin@cloudworker.solutions';
   } else {
@@ -52,7 +47,7 @@ router.get('/dashboard', isUserAuthenticated, async (req, res) => {
   });
 
   // Serialize to a JSON string and output.
-  // console.log(JSON.stringify(entry));
+
   await listGroups(user_email)
     .then((response) => {
       res.render('dashboard', {
@@ -82,8 +77,6 @@ router.get('/group/:groupid', isUserAuthenticated, async (req, res) => {
     from: from,
     pages: pages,
   });
-  console.log('RETURNING MEMBER', members.results);
-  // res.send(`Group ID = ${req.params.groupid}`);
 });
 
 router.post('/group/:groupid', isUserAuthenticated, async (req, res) => {
@@ -107,7 +100,7 @@ router.post('/group/:groupid', isUserAuthenticated, async (req, res) => {
     })
     .catch((response) => {
       const status = response.status;
-      console.log(status);
+
       res.render('groups', {
         groupid: groupid,
         members: [response.data],
@@ -132,23 +125,15 @@ router.get('/reset/:memberid', isUserAuthenticated, async (req, res) => {
 router.post('/reset', async (req, res) => {
   const memberEmail = req.body.username;
   const password = await md5(req.body.password);
-  // const password = req.body.password;
-  console.log(password);
-  // const confPassword = req.body.confPassword;
-  // const errors = await validationResult(req);
-  // const memberInfo = await userInfo(memberEmail);
 
   var response = await updatePassword(memberEmail, password)
     .then((response) => {
-      console.log('All good');
-      console.log(response);
       res.render('success', {
         layout: false,
         email: response.data.primaryEmail,
       });
     })
     .catch((response) => {
-      console.log(response.errors);
       res.render('reset-password', {
         layout: false,
         memberEmail: memberEmail,
@@ -158,7 +143,6 @@ router.post('/reset', async (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-  // req.logOut();
   res.redirect('/_gcp_iap/clear_login_cookie');
 });
 
