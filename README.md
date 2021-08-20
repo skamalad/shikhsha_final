@@ -1,12 +1,14 @@
 #### Overview:
 
-Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof of concept application to support scaled access to reset user passwords in a Google Workspace for Education tenant. It will also work for non-Edu Google Workspace tenants. Whilst the Google admin console facilitates delegated administration, it is not scalable or tightly scoped enough for education entities at country or state level to allow (for example) tens of thousands of individual teachers to reset _only_ the Google account password for students directly in their classes.
+Project Shikhsha _(in Hindi, शिक्षा, meaning Education)_ is a proof of concept application to support scaled access to reset user passwords in a Google Workspace for Education tenant. It will also work for non-Edu Google Workspace tenants. 
+
+Whilst the Google admin console facilitates delegated administration, it is not scalable or tightly scoped enough for education entities at country or state level to allow (for example) tens of thousands of individual teachers to reset _only_ the Google account password for students directly in their classes.
 
 This project is not maintained or distributed by Google. Please use it as a basis to explore your own solution.
 
 ---
 
-#### How is Shiksha built?
+#### How is Shikhsha built?
 
 Shikhsha is built on Google Cloud Platform App Engine: a highly scalable and fully managed serverless platform using [Node.js ](https://nodejs.org/en/)as the language environment.
 
@@ -63,7 +65,7 @@ _Groups are used for two primary reasons:_
 
 
 *   Identity Aware Proxy only functions with users or groups.
-*   Most Educational customers (and many Enterprise) already have logical groupings of users in a third party directory service (e.g. Active Directory) which are being synced to their Workspace tenant. These existing groups can be used simply by adding a prefix.
+*   Most Educational customers (and many Enterprise) already have logical groupings of users in a third party directory service (e.g. Active Directory) which are being synced to their Workspace tenant. These existing groups can be used simply by adding a prefix to the group name.
 
 _Considerations:_
 
@@ -88,7 +90,7 @@ _Best practice security considerations should always apply._ In the case of Proj
 *   Shikhsha is only available to users from the Google tenant to which it is deployed. 
 *   The application has [domain wide delegation](https://support.google.com/a/answer/162106?hl=en&ref_topic=10021546) to make changes to user passwords. 
 *   The app is further restricted in the operations it can perform by [OAuth scopes](https://developers.google.com/identity/protocols/oauth2/scopes#admin-directory): only user and group access is specified.
-*   The user account which is created to "act" as Shikhsha has permission to operate over API only, and to read users and groups and reset passwords and has no access to any other Google service.
+*   The user account which is created to "act" as Shikhsha has permission to operate over API only, and to read users,groups and reset passwords. It has no access to any other Google service.
 *   The service account used for server to server (Shikhsha > Google APIs) authentication generates a unique key. Secret Manager is used to securely store this key, which is retrieved by the app only when making a call which requires authentication. Secret Manager can be configured to rotate this key on a regular basis, amongst other things.
 *   The following points elaborate on more granular access control.
     *   App access is restricted to allowed Google Groups only by IAP. 
