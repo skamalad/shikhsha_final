@@ -128,14 +128,14 @@ Open the [Google Cloud console](https://console.cloud.google.com/) in your brows
 
 ##### Enable APIs
 
-Navigate to APIs and Services > Dashboard. Enable the following APIs:
+Navigate to APIs and Services > Library. Enable the following APIs:
 
 
 
 *   Admin SDK API
 *   Secret Manager API
 *   Cloud Build API
-*   IAP API
+*   Cloud Identity-Aware Proxy API
 
 
 ##### Link/create billing account
@@ -152,7 +152,7 @@ Deployment will take a few minutes as the App Engine environment is being provis
 
 ##### Configure OAuth consent
 
-Navigate to APIs and Services > OAuth to configure the OAUth consent screen.
+Navigate to APIs and Services > OAuth consent screen to configure the OAuth consent screen.
 
 
 
@@ -160,7 +160,7 @@ Navigate to APIs and Services > OAuth to configure the OAUth consent screen.
 *   Give your application a name.
 *   Provide a contact email address for user support. This must be on the domain which is used by Workspace/GCP.
 *   Provide an email address for developer contact information.
-*   All other fields, including OAuth scopes, are not required. Save and continue to the summary screen.
+*   All other fields, including OAuth scopes, are not required. Save and continue to the summary screen, and then click save and continue again.
 
 
 ##### Create service account and generate key
@@ -274,7 +274,7 @@ In order to only allow specified domain users to access the application,[ Identi
 *   Under HTTPS Resources, your application should be listed as an App Engine app.
 *   The toggle under the IAP column will be off - click to enable it.
 *   In the pop up dialog box click Turn On.
-*   In the popover window on the right, click the Add Member button.
+*   Click on the application name and in the popover window on the right, click the Add Member button.
 *   Search for the appropriate user/group, then under the Select a role dropdown choose Cloud IAP > IAP-secured Web App User, then click save.
 *   Repeat to add more users/groups.
 *   It’s highly recommended to manage IAP access via  Groups as doing so by individual users is not scalable.
