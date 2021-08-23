@@ -42,9 +42,11 @@ router.get('/dashboard', isUserAuthenticated, async (req, res) => {
 
   const entry = Object.assign({
     severity: 'NOTICE',
-    message: `User ${user_email} logged in`,
+    message: `Username ${user_email} logged in`,
     component: 'node',
   });
+
+  console.log(JSON.stringify(entry));
 
   // Serialize to a JSON string and output.
 
