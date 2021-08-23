@@ -110,7 +110,9 @@ The following query can be used to check activity within the Shikhsha applicatio
 
 _resource.type="gae_app"
 severity="NOTICE"
-log_name="projects/<project-name>/logs/cloudaudit.googleapis.com%2Factivity"_
+log_name="projects/**project-name**/logs/cloudaudit.googleapis.com%2Factivity"_
+
+Replace **project-name** with your own.
 
 ---
 
