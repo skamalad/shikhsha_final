@@ -106,9 +106,11 @@ App Engine and other GCP services will create logs in Cloud Logging both during 
 
 When a password is changed via Shikhsha, Google Workspace will report this in the [admin audit log](https://support.google.com/a/answer/4579579?hl=en) as being changed by the delegated admin user (acting on behalf of the “service” account), regardless of which specific end user actually made the change - this single user is specified during the app configuration and deployment process (see below). This is standard behaviour when delegating permission to a third party application which is performing operations via API.
 
-The actual user who performed a password reset can be viewed in Cloud Logging - the following query string can be used to filter specifically for a reset:
+The actual user who performed a password reset can be viewed in Cloud Logging - the following query can be used to filter specifically for a reset:
 
-_(Query string here)_
+_resource.type="gae_app"
+severity="NOTICE"
+log_name="projects/<your-project-name>/logs/appengine.googleapis.com%2Fstdout"_
 
 ---
 
